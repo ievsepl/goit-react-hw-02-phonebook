@@ -1,10 +1,10 @@
 // import Box from '../Box/Box';
+import { PropTypes } from 'prop-types';
 
 const Filter = ({ filter, onFilter }) => {
   return (
     <div>
       <label>
-        {' '}
         Find contacts by name:
         <input
           type="text"
@@ -19,4 +19,10 @@ const Filter = ({ filter, onFilter }) => {
     </div>
   );
 };
+
 export default Filter;
+
+Filter.propTypes = {
+  onFilter: PropTypes.func.isRequired,
+  filter: PropTypes.arrayOf(PropTypes.string),
+}.isRequired;

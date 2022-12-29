@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import Box from '../Box/Box';
-// import { nanoid } from 'nanoid';
-
-// // ({ name, number, saveContact, handleChange }) =>
+import { PropTypes } from 'prop-types';
 
 class ContactForm extends Component {
   state = {
@@ -17,8 +15,14 @@ class ContactForm extends Component {
 
   saveContact = e => {
     e.preventDefault();
-    this.props.onSubmit(this.state);
-    this.reset();
+    if (
+      this.props.contacts.every(contact => contact.name !== this.state.name)
+    ) {
+      this.props.onSubmit(this.state);
+      this.reset();
+    } else {
+      alert(`${this.state.name} is already in your contacts`);
+    }
   };
 
   reset = () => {
@@ -31,6 +35,7 @@ class ContactForm extends Component {
       saveContact,
       handleChange,
     } = this;
+
     return (
       <Box
         display="flex"
@@ -71,3 +76,14 @@ class ContactForm extends Component {
   }
 }
 export default ContactForm;
+
+ContactForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  contacts: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      number: PropTypes.string.isRequired,
+    }).isRequired
+  ).isRequired,
+};

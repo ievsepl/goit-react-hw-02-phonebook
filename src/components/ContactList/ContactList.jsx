@@ -1,22 +1,19 @@
-import Box from '../Box/Box';
 import React, { Component } from 'react';
+import { PropTypes } from 'prop-types';
+// import Box from '../Box/Box';
+import ContactItem from '../ContactItem/ContactItem';
 
 class ContactList extends Component {
-  //   state = { contacts: this.props.contacts };
   render() {
     return (
       <ul>
-        {this.props.contacts.map(({ id, name, number }) => {
+        {this.props.contacts.map(contact => {
           return (
-            <Box key={id} border="1px solid red" as="li">
-              {name} - {number}
-              <button
-                type="button"
-                onClick={() => this.props.deleteContact(id)}
-              >
-                Delete
-              </button>
-            </Box>
+            <ContactItem
+              key={contact.id}
+              contact={contact}
+              deleteContact={this.props.deleteContact}
+            />
           );
         })}
       </ul>
@@ -25,3 +22,14 @@ class ContactList extends Component {
 }
 
 export default ContactList;
+
+ContactList.propTypes = {
+  deleteContact: PropTypes.func.isRequired,
+  contacts: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      number: PropTypes.string.isRequired,
+    }).isRequired
+  ).isRequired,
+};

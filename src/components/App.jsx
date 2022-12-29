@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { PropTypes } from 'prop-types';
 import Box from './Box/Box';
 import { nanoid } from 'nanoid';
 import ContactForm from './ContactForm/ContactForm';
@@ -19,14 +20,13 @@ export class App extends Component {
   onSubmitForm = data => {
     console.log(data.name);
     data.id = nanoid();
-
+    // if (this.state.contacts.every(contact => contact.name !== data.name)) {
     this.setState(prev => {
-      if (this.state.contacts.every(contact => contact.name !== data.name)) {
-        return { contacts: [...prev.contacts, data] };
-      } else {
-        alert(`${data.name} is already in your contacts`);
-      }
+      return { contacts: [...prev.contacts, data] };
     });
+    // } else {
+    // alert(`${data.name} is already in your contacts`);
+    // }
   };
 
   onFilterForm = e => {
@@ -48,7 +48,7 @@ export class App extends Component {
 
   render() {
     const {
-      state: { filter },
+      state: { contacts, filter },
       onFilterForm,
       onSubmitForm,
       visibleNamesMethod,
@@ -68,15 +68,21 @@ export class App extends Component {
         color="#010101"
       >
         <h1>Phonebook</h1>
-        <ContactForm onSubmit={onSubmitForm} />
+        <ContactForm onSubmit={onSubmitForm} contacts={contacts} />
         <h2>Contacts</h2>
         <Filter filter={filter} onFilter={onFilterForm} />
         <ContactList
           contacts={visibleNames}
-          filter={visibleNames}
+          // filter={visibleNames}
           deleteContact={deleteContact}
         />
       </Box>
     );
   }
 }
+
+App.propTypes = {
+  data: PropTypes.objectOf({
+    name: PropTypes.string,
+  }),
+};
